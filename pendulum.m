@@ -19,7 +19,7 @@ K_d = 2.0;    % Derivative gain
 
 t_start = 0.0;     % Start time (seconds)
 t_end = 10.0;      % End time (seconds)
-dt = 0.005;         % Time step for plotting/control (seconds)
+dt = 0.01;         % Time step for plotting/control (seconds)
 
 % Pendulum parameters
 m = 1.0;      % Mass (kg)
@@ -28,7 +28,7 @@ g = 9.81;     % Gravity (m/s^2)
 b = 0.5;      % Damping coefficient (kg*m^2/s)
 
 % Initial conditions [angle, angular velocity, error_integral]
-x0 = [3*pi/4; 0.0; 0.0];  % Initial angle close to downward position (3π/4 from upright)
+x0 = [pi/4; 0.0; 0.0];  % Initial angle close to downward position
 
 setpoint = 0.0;     % Balance the pendulum in the upright position
 
@@ -232,7 +232,7 @@ if include_lqr
     [K_lqr, ~, ~] = lqr(A, B, Q, R);
     
     % Initial conditions for LQR (angle and angular velocity only)
-    x0_lqr = [3*pi/4; 0.0];  % Same initial angle as PID
+    x0_lqr = [x0(1); x0(2)];  % Same initial angle as PID
     
     % Simulate LQR system
     [t_lqr, x_lqr] = ode45(@(t, x) pendulum_dynamics_lqr(t, x, K_lqr, m, l, g, b, setpoint), t_span, x0_lqr, options);
